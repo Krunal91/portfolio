@@ -85,8 +85,6 @@ def predict():
 		image_data = np.reshape(image_data,(1,28,28,1))
 		with graph.as_default():
 			prediction = np.argmax(model.predict(image_data))
-			print("Good")
-
 			return str(prediction)
 
 
