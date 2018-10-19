@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cat vs Dog Classification</title>
+
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <meta name="description" content="">
+	  <meta name="author" content="Krunal Patel">
+
+	  <!-- Bootstrap Core CSS -->
+	  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	  <!-- Custom Fonts -->
+	  <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+	  <link href="../static/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+
+	  <!-- Custom CSS -->
+	  <link href="../static/css/stylish-portfolio.min.css" rel="stylesheet">
+</head>
+
+<body style="background: #DDDEE4";>
+	<section align="center" style="padding-top: 2em;"> 
+		<h1> Cat Vs Dog Image Classification </h1>
+
+	</section>
+
+	<section style="display: inline-block;width: 100%; padding-top: 2em;">
+		<div style="width: 100%; float: left;" align="center">
+			<form id="form1" action="" method="post" enctype="multipart/form-data">
+				<input type="file" name="pic" accept="image/*" onchange="encodeImage(this)"><br><br>
+			</form>
+			<img src="" id="uploaded_image" height=300 width=300 style="display: none;"><br><br>
+			<button class="btn btn-primary " id="predict_button"  name=""> Classify! </button><br><br>
+			<h3 class="mb-4" id="result" style="display: inline-block; color: green;"></h3><br>
+		</div>
+<!-- 
+		<div style="width: 50%; float: right;" align="center">
+			<h2> This is a </h2><br>
+			<img src="" id="uploaded_image" height=300 width=300>
+			<h3> Dog </h3>
+		</div> -->
+	</section>
+
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+<script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+<script src="../static/js/stylish-portfolio.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var base64 = ''
+
+	function encodeImage(element){
+		var file = element.files[0];
+		var reader = new FileReader();
+		reader.onloadend = function(){
+			document.getElementById("uploaded_image").style.display = "inline-block";
+			$("#uploaded_image").attr("src",reader.result);
+			base64 = reader.result
+		}
+		reader.readAsDataURL(file);
+
+	};
+
+
+	$("#predict_button").on("click",function(){
+		var image= base64
+          $.ajax({
+                url:"/catpredict",
+                contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                // send the base64 post parameter
+                data:{image},
+                // important POST method !
+                type:"POST",
+                success: function(response){
+                	$("#result").html(response);
+                	// document.getElementById("predict_button").disabled = true;
+                }
+              });
+
+		// document.getElementById("result").style.display = "inline-block";
+		// document.forms["form1"].submit();
+
+	});
+
+
+</script>
+
+
+</body>
+</html>
